@@ -1,0 +1,21 @@
+/* Variables and mixins declared here will be available in all other SCSS files */
+
+$White: hsl(0, 0%, 100%);
+$ShadowBlue: hsl(237, 18%, 59%); // #8486a9
+$Martinique: hsl(236, 21%, 26%); // #343650
+$Charade: hsl(235, 16%, 14%); // #1e1f29
+$SteelGray: hsl(234, 17%, 12%);
+$BrinkPink: hsl(345, 95%, 68%);
+
+// @mixin gradient {
+// 	background: rgb(52, 54, 80);
+// 	background: linear-gradient(0deg, rgba(52, 54, 80, 1) 0%, rgba(52, 54, 80, 1) 50%, rgba(30, 31, 41, 1) 51%, rgba(30, 31, 41, 1) 100%);
+// }
+@mixin gradient2 {
+	background: rgb(52, 54, 80);
+	background: linear-gradient(0deg, rgba(52, 54, 80, 1) 0%, rgba(52, 54, 80, 1) 50%, rgba(30, 31, 41, 1) 51%, rgba(30, 31, 41, 1) 100%);
+}
+
+$fs-body: 14px;
+$ff: 'Red Hat Text', sans-serif;
+$fw-700: 700;
