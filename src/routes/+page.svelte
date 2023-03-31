@@ -1,4 +1,70 @@
 <script>
+	let isCountdownFinished = false;
+
+	let countdown = {
+		seconds: 41,
+		minutes: 55,
+		hours: 23,
+		days: 8
+	};
+
+	const intervalId = setInterval(() => {
+		const A_SECOND = 1000;
+		countdown.seconds--;
+
+		let modified = false;
+
+		if (countdown.seconds === 0) {
+			setTimeout(() => {
+				if (!modified && !isCountdownFinished) {
+					countdown.minutes = 59;
+				}
+				if (!isCountdownFinished) {
+					countdown.seconds = 59;
+				}
+			}, A_SECOND);
+
+			if (countdown.minutes > 0) {
+				countdown.minutes--;
+				modified = true;
+			} else if (countdown.minutes === 0) {
+				if (countdown.hours > 0) {
+					countdown.hours--;
+				} else if (countdown.hours === 0) {
+					if (countdown.days === 0) {
+						for (let number in countdown) {
+							number = 0;
+						}
+						isCountdownFinished = true;
+					} else {
+						setTimeout(() => {
+							countdown.hours = 23;
+							countdown.days--;
+						}, A_SECOND);
+					}
+				}
+			}
+		}
+	}, 1000);
+
+	$: if (isCountdownFinished) clearInterval(intervalId);
+
+	// const today = new Date();
+	// const secondsTillCountdown = countdown.seconds + countdown.minutes * 60 + countdown.hours * 60 * 60 + countdown.days * 24 * 60 * 60;
+	// const target = new Date(today.setSeconds(today.getSeconds() + secondsTillCountdown));
+	// target.getSeconds();
+	// target.getMinutes()
+	// target.getHours()
+	// const newSeconds = new Date(target.setSeconds(target.getSeconds() - 1));
+
+	const formatNumber = (num) => {
+		if (typeof num === 'number') {
+			const str = num.toString();
+			return str.length < 2 ? str.padStart(2, '0') : str;
+		} else {
+			throw new Error('formatNumber expects a number');
+		}
+	};
 </script>
 
 <section>
@@ -11,25 +77,25 @@
 		<div class="countdown-wrapper">
 			<div class="block days">
 				<span class="number">
-					<span class="number-number">08</span>
+					<span class="number-number">{formatNumber(countdown.days)}</span>
 				</span>
 				<span class="text">days</span>
 			</div>
 			<div class="block hours">
 				<span class="number">
-					<span class="number-number">23</span>
+					<span class="number-number">{formatNumber(countdown.hours)}</span>
 				</span>
 				<span class="text">hours</span>
 			</div>
 			<div class="block minutes">
 				<span class="number">
-					<span class="number-number">55</span>
+					<span class="number-number">{formatNumber(countdown.minutes)}</span>
 				</span>
 				<span class="text">minutes</span>
 			</div>
 			<div class="block seconds">
 				<span class="number">
-					<span class="number-number">41</span>
+					<span class="number-number">{formatNumber(countdown.seconds)}</span>
 				</span>
 				<span class="text">seconds</span>
 			</div>
@@ -109,6 +175,7 @@
 			gap: 1rem;
 			.number {
 				@include gradient2;
+				@include size(4rem);
 				padding: 1rem 1.4rem;
 				font-size: 3rem;
 				color: $BrinkPink;

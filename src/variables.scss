@@ -16,6 +16,11 @@ $BrinkPink: hsl(345, 95%, 68%);
 	background: linear-gradient(0deg, rgba(52, 54, 80, 1) 0%, rgba(52, 54, 80, 1) 50%, rgba(30, 31, 41, 1) 51%, rgba(30, 31, 41, 1) 100%);
 }
 
+@mixin size($size) {
+	width: $size;
+	height: $size;
+}
+
 $fs-body: 14px;
 $ff: 'Red Hat Text', sans-serif;
 $fw-700: 700;
