@@ -1,13 +1,18 @@
-import preprocess from "svelte-preprocess";
+import preprocess from 'svelte-preprocess';
 
 const config = {
-  preprocess: [
-    preprocess({
-      scss: {
-        prependData: '@use "src/variables.scss" as *;',
-      },
-    }),
-  ],
+	kit: {
+		alias: {
+			$utils: 'src/utils'
+		}
+	},
+	preprocess: [
+		preprocess({
+			scss: {
+				prependData: '@use "src/variables.scss" as *;'
+			}
+		})
+	]
 };
 
 export default config;

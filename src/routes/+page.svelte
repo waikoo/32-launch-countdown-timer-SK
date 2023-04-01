@@ -1,101 +1,65 @@
 <script>
-	let isCountdownFinished = false;
+	import runCountdown from '$utils/runCountdown';
+	import { formatNumber } from '$utils/countdownUi';
+	import { countdown, isTimeUp } from '$lib/stores';
+	import { onMount } from 'svelte';
 
-	let countdown = {
-		seconds: 41,
-		minutes: 55,
-		hours: 23,
-		days: 8
-	};
+	let storeCopy = null;
 
-	const intervalId = setInterval(() => {
-		const A_SECOND = 1000;
-		countdown.seconds--;
+	countdown.subscribe((store) => {
+		storeCopy = store;
+	});
 
-		let modified = false;
+	onMount(runCountdown);
 
-		if (countdown.seconds === 0) {
-			setTimeout(() => {
-				if (!modified && !isCountdownFinished) {
-					countdown.minutes = 59;
-				}
-				if (!isCountdownFinished) {
-					countdown.seconds = 59;
-				}
-			}, A_SECOND);
+	$: if ($isTimeUp) console.log('time is UP');
+	$: uiDays = formatNumber(storeCopy.days);
+	$: uiSeconds = formatNumber(storeCopy.seconds);
+	$: uiHours = formatNumber(storeCopy.hours);
+	$: uiMinutes = formatNumber(storeCopy.minutes);
 
-			if (countdown.minutes > 0) {
-				countdown.minutes--;
-				modified = true;
-			} else if (countdown.minutes === 0) {
-				if (countdown.hours > 0) {
-					countdown.hours--;
-				} else if (countdown.hours === 0) {
-					if (countdown.days === 0) {
-						for (let number in countdown) {
-							number = 0;
-						}
-						isCountdownFinished = true;
-					} else {
-						setTimeout(() => {
-							countdown.hours = 23;
-							countdown.days--;
-						}, A_SECOND);
-					}
-				}
-			}
-		}
-	}, 1000);
-
-	$: if (isCountdownFinished) clearInterval(intervalId);
-
-	// const today = new Date();
-	// const secondsTillCountdown = countdown.seconds + countdown.minutes * 60 + countdown.hours * 60 * 60 + countdown.days * 24 * 60 * 60;
-	// const target = new Date(today.setSeconds(today.getSeconds() + secondsTillCountdown));
-	// target.getSeconds();
-	// target.getMinutes()
-	// target.getHours()
-	// const newSeconds = new Date(target.setSeconds(target.getSeconds() - 1));
-
-	const formatNumber = (num) => {
-		if (typeof num === 'number') {
-			const str = num.toString();
-			return str.length < 2 ? str.padStart(2, '0') : str;
-		} else {
-			throw new Error('formatNumber expects a number');
-		}
+	const jibberish = () => {
+		// $: console.log(countdown.seconds);
+		// $: if (isCountdownFinished) clearInterval(intervalId);
+		// const today = new Date();
+		// const secondsTillCountdown = countdown.seconds + countdown.minutes * 60 + countdown.hours * 60 * 60 + countdown.days * 24 * 60 * 60;
+		// const target = new Date(today.setSeconds(today.getSeconds() + secondsTillCountdown));
+		// target.getSeconds();
+		// target.getMinutes()
+		// target.getHours()
+		// const newSeconds = new Date(target.setSeconds(target.getSeconds() - 1));
 	};
 </script>
 
 <section>
 	<img class="bg-hills" src="src/assets/img/pattern-hills.svg" alt="" />
 	<div class="title">
-		<h1 class="item">We're launching soon</h1>
+		<h1 class="item">{$isTimeUp ? 'COUNTDOWN OVER' : "We're launching soon"}</h1>
 	</div>
 
 	<div class="item countdown">
 		<div class="countdown-wrapper">
 			<div class="block days">
 				<span class="number">
-					<span class="number-number">{formatNumber(countdown.days)}</span>
+					<span class="number-number">{uiDays}</span>
 				</span>
 				<span class="text">days</span>
 			</div>
 			<div class="block hours">
 				<span class="number">
-					<span class="number-number">{formatNumber(countdown.hours)}</span>
+					<span class="number-number">{uiHours}</span>
 				</span>
 				<span class="text">hours</span>
 			</div>
 			<div class="block minutes">
 				<span class="number">
-					<span class="number-number">{formatNumber(countdown.minutes)}</span>
+					<span class="number-number">{uiMinutes}</span>
 				</span>
 				<span class="text">minutes</span>
 			</div>
 			<div class="block seconds">
 				<span class="number">
-					<span class="number-number">{formatNumber(countdown.seconds)}</span>
+					<span class="number-number">{uiSeconds}</span>
 				</span>
 				<span class="text">seconds</span>
 			</div>
