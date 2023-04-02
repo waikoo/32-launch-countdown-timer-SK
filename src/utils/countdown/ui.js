@@ -3,6 +3,6 @@ export const formatNumber = (num) => {
 		const str = num.toString();
 		return str.length < 2 ? str.padStart(2, '0') : str;
 	} else {
-		throw new Error('formatNumber expects a number');
+		throw new Error('received: ' + typeof num + ' expected: number');
 	}
 };

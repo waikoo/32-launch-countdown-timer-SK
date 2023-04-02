@@ -1,22 +1,15 @@
 <script>
-	import runCountdown from '$utils/runCountdown';
-	import { formatNumber } from '$utils/countdownUi';
+	import runCountdown from '$utils/countdown/runCountdown';
+	import { formatNumber } from '$utils/countdown/ui';
 	import { countdown, isTimeUp } from '$lib/stores';
 	import { onMount } from 'svelte';
 
-	let storeCopy = null;
+	onMount(() => runCountdown());
 
-	countdown.subscribe((store) => {
-		storeCopy = store;
-	});
-
-	onMount(runCountdown);
-
-	$: if ($isTimeUp) console.log('time is UP');
-	$: uiDays = formatNumber(storeCopy.days);
-	$: uiSeconds = formatNumber(storeCopy.seconds);
-	$: uiHours = formatNumber(storeCopy.hours);
-	$: uiMinutes = formatNumber(storeCopy.minutes);
+	$: uiDays = formatNumber($countdown.days);
+	$: uiSeconds = formatNumber($countdown.seconds);
+	$: uiHours = formatNumber($countdown.hours);
+	$: uiMinutes = formatNumber($countdown.minutes);
 
 	const jibberish = () => {
 		// $: console.log(countdown.seconds);

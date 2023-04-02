@@ -14,4 +14,9 @@ const areAllNumbers = (store) => {
 	}
 };
 
-export { hasAllProps, areAllNumbers };
+const areAllZero = (store) => {
+	// console.log(store.seconds);
+	return Object.values(store).every((prop) => prop === 0);
+};
+
+export { hasAllProps, areAllNumbers, areAllZero };
