@@ -2,12 +2,9 @@ import { hasAllProps, areAllNumbers, areAllZero } from './conditions';
 import { handleProp, stopCountdown, initStore } from './modify';
 import { countdown, isTimeUp, intervalId } from '$lib/stores';
 import { get } from 'svelte/store';
-// import {  } from 'svelte/internal';
 
 const runCountdown = () => {
 	initStore();
-
-	console.log(get(countdown));
 	if (hasAllProps(get(countdown)) && areAllNumbers(get(countdown))) {
 		let iId = setInterval(() => {
 			const { seconds, minutes, hours, days } = get(countdown);

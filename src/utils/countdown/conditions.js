@@ -4,6 +4,7 @@ import { countdown } from '$lib/stores';
 const hasAllProps = (store) => {
 	console.log(get(countdown));
 	const arrOfProps = Object.keys(store);
+	console.log(arrOfProps);
 	return arrOfProps.every((prop) => arrOfProps.includes(prop));
 };
 

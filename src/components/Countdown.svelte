@@ -1,10 +1,6 @@
 <script>
 	import { getCount } from '$utils/countdown/ui';
 	import { countdown, isTimeUp } from '$lib/stores';
-	import { onMount } from 'svelte';
-	import DateInput from '../components/DateInput.svelte';
-
-	// onMount(() => runCountdown());
 
 	let uiDays, uiHours, uiMinutes, uiSeconds;
 
@@ -14,18 +10,6 @@
 		uiMinutes = getCount($countdown.minutes);
 		uiSeconds = getCount($countdown.seconds);
 	}
-
-	const jibberish = () => {
-		// $: console.log(countdown.seconds);
-		// $: if (isCountdownFinished) clearInterval(intervalId);
-		// const today = new Date();
-		// const secondsTillCountdown = countdown.seconds + countdown.minutes * 60 + countdown.hours * 60 * 60 + countdown.days * 24 * 60 * 60;
-		// const target = new Date(today.setSeconds(today.getSeconds() + secondsTillCountdown));
-		// target.getSeconds();
-		// target.getMinutes()
-		// target.getHours()
-		// const newSeconds = new Date(target.setSeconds(target.getSeconds() - 1));
-	};
 </script>
 
 <section class="countdown-comp">

@@ -33,18 +33,14 @@ const resetTime = (prop) => {
 const initStore = () => {
 	const { date, time } = get(target);
 
-	countdown.update((cd) => {
-		if (!date && !time) {
-			// use default values
-			return {
-				seconds: 41,
-				minutes: 55,
-				hours: 23,
-				days: 8
-			};
-		} else if ((date && !time) || (date && time)) return getTimeLeft();
-		else throw new Error("Can't run initStore()");
-	});
+	if (!date && !time) return;
+	else if ((date && !time) || (date && time)) {
+		countdown.update(getTimeLeft);
+	} else if (!date && time) {
+		console.log('szeretlek');
+	} else {
+		throw new Error("Can't run initStore()");
+	}
 };
 
 const getTimeLeft = () => {
@@ -52,7 +48,8 @@ const getTimeLeft = () => {
 
 	if (date) {
 		const presentDate = new Date();
-		const targetDate = new Date(date ? date : `${date}T${time}:${presentDate.getSeconds()}`);
+		const dateTimeStr = time ? `${date}T${time}:${presentDate.getSeconds()}` : date;
+		const targetDate = new Date(dateTimeStr); // jelen ora?
 		const dateDiff = targetDate.getTime() - presentDate.getTime();
 
 		const MS = {
@@ -95,5 +92,25 @@ const getTimeUnit = (timeDiff, unit) => {
 	}
 	return Math.floor(timeDiff / factor);
 };
+// const getTimeUnit = (timeDiff, unit) => {
+// 	let factor;
+// 	switch (unit) {
+// 		case 'days':
+// 			factor = 1000 * 60 * 60 * 24;
+// 			break;
+// 		case 'hours':
+// 			factor = 1000 * 60 * 60;
+// 			break;
+// 		case 'minutes':
+// 			factor = 1000 * 60;
+// 			break;
+// 		case 'seconds':
+// 			factor = 1000;
+// 			break;
+// 		default:
+// 			throw new Error(`Invalid unit: ${unit}`);
+// 	}
+// 	return Math.floor(timeDiff / factor);
+// };
 
 export { handleProp, stopCountdown, initStore };
