@@ -1,15 +1,22 @@
 <script>
 	import { onDestroy } from 'svelte';
-	import { showDateInput, target } from '$lib/stores';
+	import { showDateInput, target, isPastDate, isCountdownNotInitialized } from '$lib/stores';
 	import runCountdown from '$utils/countdown/runCountdown';
+	import { initStore } from '$utils/countdown/modify';
 
 	let dateRef, timeRef;
 
 	const submitHandler = () => {
 		if (dateRef.value) $target.date = dateRef.value;
 		if (timeRef.value) $target.time = timeRef.value;
-		runCountdown();
-		$showDateInput = false;
+		initStore();
+		if ($isPastDate) {
+			setTimeout(() => ($isPastDate = false), 500);
+		} else {
+			$isCountdownNotInitialized = false;
+			$showDateInput = false;
+			runCountdown();
+		}
 	};
 
 	onDestroy(() => {});
@@ -18,7 +25,7 @@
 <section class="input-con">
 	<form class="input-wrapper" on:submit={submitHandler}>
 		<label for="date">
-			Choose your end date
+			<span class="future" class:error={$isPastDate}>Choose a future date</span>
 			<div class="input-button-con">
 				<input type="date" name="date" id="date" bind:this={dateRef} />
 				<input type="time" name="time" id="time" bind:this={timeRef} />
@@ -29,13 +36,18 @@
 </section>
 
 <style lang="scss">
+	.error {
+		color: red;
+		animation: shake-animation 0.5s ease-in-out;
+	}
+
 	.input-con {
 		position: absolute;
 		top: 0;
 		left: 0;
 		right: 0;
 		bottom: 0;
-		z-index: 2;
+		z-index: 12;
 		display: grid;
 		place-items: center;
 	}
@@ -104,6 +116,24 @@
 			cursor: pointer;
 			color: $BrinkPink;
 			border: 2px solid $BrinkPink;
+		}
+	}
+
+	@keyframes shake-animation {
+		0% {
+			transform: scale(1);
+		}
+		25% {
+			transform: translateX(-10px) scaleY(1.2) scaleX(0.8);
+		}
+		50% {
+			transform: translateX(10px) scaleY(0.8) scaleX(1.2);
+		}
+		75% {
+			transform: translateX(-10px) scaleY(1.2) scaleX(0.8);
+		}
+		100% {
+			transform: scale(1);
 		}
 	}
 </style>

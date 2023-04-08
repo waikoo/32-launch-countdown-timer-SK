@@ -7,13 +7,19 @@ export const countdown = writable({
 	days: 8
 });
 
-export let isTimeUp = writable(false);
-
-export let intervalId = writable(null);
-
-export let showDateInput = writable(true);
-
 export const target = writable({
 	date: null,
 	time: null
 });
+
+export let showDateInput = writable(true);
+
+export let isPastDate = writable(false);
+
+export let isCountdownFinished = writable(false);
+
+export let isCountdownRunning = writable(false);
+
+export let isCountdownNotInitialized = writable(true);
+
+export let isCountdownRunningOnDefault = writable(false);

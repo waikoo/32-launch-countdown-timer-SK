@@ -1,16 +1,14 @@
 import { hasAllProps, areAllNumbers, areAllZero } from './conditions';
 import { handleProp, stopCountdown, initStore } from './modify';
-import { countdown, isTimeUp, intervalId } from '$lib/stores';
+import { countdown, isCountdownFinished, isCountdownRunning } from '$lib/stores';
 import { get } from 'svelte/store';
 
 const runCountdown = () => {
-	initStore();
 	if (hasAllProps(get(countdown)) && areAllNumbers(get(countdown))) {
+		isCountdownRunning.set(true);
 		let iId = setInterval(() => {
 			const { seconds, minutes, hours, days } = get(countdown);
-
 			handleProp('seconds');
-
 			if (areAllZero(get(countdown))) stopCountdown(iId);
 			else if (seconds === 1) {
 				setTimeout(() => {
