@@ -1,13 +1,8 @@
 <script>
-	import { getCount } from '$utils/countdown/ui';
+	import { getPropOf } from '$utils/countdown/pureHelpers';
 	import { countdown } from '$lib/stores';
 
-	let uiDays, uiHours, uiMinutes, uiSeconds;
-
-	$: uiDays = getCount($countdown.days);
-	$: uiHours = getCount($countdown.hours);
-	$: uiMinutes = getCount($countdown.minutes);
-	$: uiSeconds = getCount($countdown.seconds);
+	$: [uiSeconds, uiMinutes, uiHours, uiDays] = getPropOf($countdown);
 </script>
 
 <div class="item countdown">

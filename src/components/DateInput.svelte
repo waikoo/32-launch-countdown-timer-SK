@@ -1,17 +1,19 @@
 <script>
 	import { onDestroy } from 'svelte';
-	import { showDateInput, target, isPastDate, isCountdownNotInitialized } from '$lib/stores';
-	import runCountdown from '$utils/countdown/runCountdown';
-	import { initStore } from '$utils/countdown/modify';
+	import { showDateInput, isPastDate, isCountdownNotInitialized } from '$lib/stores';
+	import { runCountdown, initStore } from '$utils/countdown/storeActions';
+	import { getMsFromFloatString } from '$utils/countdown/pureHelpers';
 
 	let dateRef, timeRef;
 
+	const getScssVar = (variable) => {
+		return getMsFromFloatString(getComputedStyle(document.documentElement).getPropertyValue(variable));
+	};
+
 	const submitHandler = () => {
-		if (dateRef.value) $target.date = dateRef.value;
-		if (timeRef.value) $target.time = timeRef.value;
-		initStore();
+		initStore(dateRef.value, timeRef.value);
 		if ($isPastDate) {
-			setTimeout(() => ($isPastDate = false), 500);
+			setTimeout(() => ($isPastDate = false), getScssVar('--animation-duration'));
 		} else {
 			$isCountdownNotInitialized = false;
 			$showDateInput = false;
@@ -38,7 +40,7 @@
 <style lang="scss">
 	.error {
 		color: red;
-		animation: shake-animation 0.5s ease-in-out;
+		animation: shake-animation $animationDuration ease-in-out;
 	}
 
 	.input-con {

@@ -1,6 +1,6 @@
 <script>
 	import { isCountdownFinished, isCountdownNotInitialized, isCountdownRunningOnDefault } from '$lib/stores';
-	import { getCountdownHeader } from '$utils/countdown/ui';
+	import { getCountdownHeader } from '$utils/countdown/pureHelpers';
 
 	$: headerText = getCountdownHeader($isCountdownFinished, $isCountdownNotInitialized, $isCountdownRunningOnDefault);
 

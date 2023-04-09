@@ -1,6 +1,3 @@
-import { get } from 'svelte/store';
-import { countdown } from '$lib/stores';
-
 const hasAllProps = (store) => {
 	if (typeof store !== 'object') throw new Error('arg not an object');
 	const arrOfProps = Object.keys(store);
@@ -11,7 +8,7 @@ const areAllNumbers = (store) => {
 	const areAllNumbers = Object.values(store).every((prop) => typeof prop === 'number');
 	if (areAllNumbers) return areAllNumbers;
 	else {
-		return Object.values(get(store)).filter((n) => typeof n !== 'number');
+		return Object.values(store).filter((n) => typeof n !== 'number');
 	}
 };
 
