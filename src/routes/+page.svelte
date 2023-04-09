@@ -14,11 +14,10 @@
 		<img class="bg-hills" src="src/assets/img/pattern-hills.svg" alt="" />
 		<Header />
 
-		{#if !$isCountdownInitialized}
+		{#if $isCountdownInitialized}
 			<Countdown />
+			<Socials />
 		{/if}
-
-		<Socials />
 	</section>
 </section>
 

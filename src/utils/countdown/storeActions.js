@@ -2,6 +2,7 @@ import { countdown, showDateInput, isCountdownFinished, isCountdownInitialized, 
 import { hasAllProps, areAllNumbers, areAllZero } from './pureConditions';
 import { resetTime, getFactorForUnit, stringToMs, getDateTimeString, calculateTimeLeft } from './pureHelpers';
 import { get } from 'svelte/store';
+import JSConfetti from 'js-confetti';
 
 export const areInputsValid = (getScssVar) => {
 	const scssVar = getScssVar('--animation-duration');
@@ -14,7 +15,7 @@ export const areInputsValid = (getScssVar) => {
 	if (get(isPastDate)) {
 		setTimeout(() => isPastDate.set(false), scssVar);
 	} else {
-		isCountdownInitialized.set(false);
+		isCountdownInitialized.set(true);
 		showDateInput.set(false);
 
 		return true;
@@ -45,7 +46,58 @@ export const runCountdown = () => {
 	}
 };
 
+const runConfetti = () => {
+	const jsConfettiEmojis = {
+		confettiRadius: 7,
+		confettiNumber: 100,
+		confettiColors: ['#ff0a54', '#ff477e', '#ff7096', '#ff85a1', '#fbb1bd', '#f9bec7'],
+		emojis: ['⏲️', '⌛', '⏰', '⏱️', '📅', '⌚']
+	};
+
+	const jsConfettiEmojis2 = {
+		confettiRadius: 18,
+		confettiNumber: 80,
+		confettiColors: ['#ff0a54', '#ff477e', '#ff7096', '#ff85a1', '#fbb1bd', '#f9bec7'],
+		emojis: ['⏲️', '⌛', '⏰', '⏱️', '📅', '⌚']
+	};
+
+	const jsConfetti = new JSConfetti();
+	jsConfetti.addConfetti(jsConfettiEmojis);
+
+	const jsConfetti2 = new JSConfetti();
+	setTimeout(
+		() =>
+			jsConfetti2.addConfetti({
+				confettiRadius: 13,
+				confettiNumber: 250,
+				confettiColors: ['#ff0a54', '#ff477e', '#ff7096', '#ff85a1', '#fbb1bd', '#f9bec7']
+			}),
+		500
+	);
+
+	const jsConfetti3 = new JSConfetti();
+	setTimeout(() => jsConfetti3.addConfetti(jsConfettiEmojis2), 2000);
+
+	const jsConfetti4 = new JSConfetti();
+	setTimeout(
+		() =>
+			jsConfetti4.addConfetti({
+				confettiRadius: 20,
+				confettiNumber: 450,
+				confettiColors: ['#f9154f', '#fa2e61', '#fa4774', '#fc799a', '#fc92ad', '#fff']
+			}),
+		1200
+	);
+
+	setTimeout(() => jsConfetti.clearCanvas(), 5000);
+	setTimeout(() => jsConfetti2.clearCanvas(), 7000);
+	setTimeout(() => jsConfetti4.clearCanvas(), 7500);
+	setTimeout(() => jsConfetti3.clearCanvas(), 8000);
+};
+
 export const stopCountdown = (intervalId) => {
+	isCountdownInitialized.set(false);
+	runConfetti();
 	resetStoreValues();
 	clearInterval(intervalId);
 };
@@ -53,13 +105,7 @@ export const stopCountdown = (intervalId) => {
 const resetStoreValues = () => {
 	isCountdownFinished.set(true);
 	isCountdownRunning.set(false);
-	countdown.set({
-		seconds: 41,
-		minutes: 55,
-		hours: 23,
-		days: 8
-	});
-	showDateInput.set(true);
+	setTimeout(() => showDateInput.set(true), 3000);
 };
 
 export const initStores = (dateValue, timeValue, customTextValue) => {
@@ -111,4 +157,16 @@ const handleProp = (prop) => {
 		let value = countdown[prop];
 		return value > 0 ? { ...countdown, [prop]: value - 1 } : resetTime(countdown, prop);
 	});
+};
+
+export const testCountdownOverIn = (seconds) => {
+	countdown.update((countdownValues) => {
+		return {
+			...countdownValues,
+			seconds: seconds
+		};
+	});
+	isCountdownInitialized.set(true);
+	showDateInput.set(false);
+	runCountdown();
 };

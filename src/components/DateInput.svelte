@@ -1,6 +1,6 @@
 <script>
-	import { isPastDate, noDateTime } from '$lib/stores';
-	import { runCountdown, initStores, areInputsValid } from '$utils/countdown/storeActions';
+	import { isPastDate, noDateTime, countdown, showDateInput, isCountdownInitialized } from '$lib/stores';
+	import { runCountdown, initStores, areInputsValid, testCountdownOverIn } from '$utils/countdown/storeActions';
 	import { getMsFromFloatString } from '$utils/countdown/pureHelpers';
 
 	let dateRef, timeRef, customTextRef;
@@ -8,10 +8,12 @@
 	const getScssVar = (variable) => getMsFromFloatString(getComputedStyle(document.documentElement).getPropertyValue(variable));
 
 	const submitHandler = () => {
-		initStores(dateRef.value, timeRef.value, customTextRef.value);
-		if (areInputsValid(getScssVar)) {
-			runCountdown();
-		}
+		// initStores(dateRef.value, timeRef.value, customTextRef.value);
+		// if (areInputsValid(getScssVar)) {
+		// 	runCountdown();
+		// }
+
+		testCountdownOverIn(1);
 	};
 </script>
 
