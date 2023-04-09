@@ -50,7 +50,7 @@
 			display: flex;
 			gap: 1rem;
 			.number {
-				@include gradient2;
+				@include gradient;
 				@include size(6rem);
 				display: grid;
 				place-items: center;

@@ -1,8 +1,25 @@
-import { countdown, showDateInput, isCountdownFinished, isPastDate, target, isCountdownRunning, isCountdownRunningOnDefault } from '$lib/stores';
+import { countdown, showDateInput, isCountdownFinished, isCountdownInitialized, isPastDate, target, isCountdownRunning, customText, noDateTime } from '$lib/stores';
 import { hasAllProps, areAllNumbers, areAllZero } from './pureConditions';
-
 import { resetTime, getFactorForUnit, stringToMs, getDateTimeString, calculateTimeLeft } from './pureHelpers';
 import { get } from 'svelte/store';
+
+export const areInputsValid = (getScssVar) => {
+	const scssVar = getScssVar('--animation-duration');
+
+	if (get(noDateTime)) {
+		setTimeout(() => noDateTime.set(false), scssVar);
+		return;
+	}
+
+	if (get(isPastDate)) {
+		setTimeout(() => isPastDate.set(false), scssVar);
+	} else {
+		isCountdownInitialized.set(false);
+		showDateInput.set(false);
+
+		return true;
+	}
+};
 
 export const runCountdown = () => {
 	if (hasAllProps(get(countdown)) && areAllNumbers(get(countdown))) {
@@ -34,7 +51,6 @@ export const stopCountdown = (intervalId) => {
 };
 
 const resetStoreValues = () => {
-	isCountdownRunningOnDefault.set(false);
 	isCountdownFinished.set(true);
 	isCountdownRunning.set(false);
 	countdown.set({
@@ -46,13 +62,15 @@ const resetStoreValues = () => {
 	showDateInput.set(true);
 };
 
-export const initStore = (dateValue, timeValue) => {
-	setDateTime(dateValue, timeValue);
-
+export const initStores = (dateValue, timeValue, customTextValue) => {
 	if (!dateValue && !timeValue) {
-		isCountdownRunningOnDefault.set(true);
+		noDateTime.set(true);
 		return;
 	}
+
+	setDateTime(dateValue, timeValue);
+	setHeader(customTextValue);
+
 	countdown.update(() => getTimeLeft(dateValue, timeValue));
 };
 
@@ -74,6 +92,18 @@ const setDateTime = (dateValue, timeValue) => {
 		date: dateValue,
 		time: timeValue
 	});
+};
+
+const setHeader = (customInput) => {
+	let finalText;
+
+	if (!customInput) {
+		finalText = get(isCountdownFinished) ? 'COUNTDOWN OVER' : '';
+	} else {
+		finalText = customInput;
+	}
+
+	customText.set(finalText);
 };
 
 const handleProp = (prop) => {

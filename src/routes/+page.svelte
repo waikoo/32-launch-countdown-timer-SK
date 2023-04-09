@@ -1,7 +1,7 @@
 <script>
 	import DateInput from '../components/DateInput.svelte';
 	import Countdown from '../components/Countdown.svelte';
-	import { showDateInput, isCountdownNotInitialized } from '$lib/stores';
+	import { showDateInput, isCountdownInitialized } from '$lib/stores';
 	import Header from '../components/Header.svelte';
 	import Socials from '../components/Socials.svelte';
 </script>
@@ -14,7 +14,7 @@
 		<img class="bg-hills" src="src/assets/img/pattern-hills.svg" alt="" />
 		<Header />
 
-		{#if !$isCountdownNotInitialized}
+		{#if !$isCountdownInitialized}
 			<Countdown />
 		{/if}
 

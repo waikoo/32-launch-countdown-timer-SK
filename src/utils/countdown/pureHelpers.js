@@ -99,22 +99,6 @@ const getPadded = (unit, presentDate, time = null) => {
 	return number.toString().padStart(2, '0');
 };
 
-export const getCountdownHeader = (...args) => {
-	let [isCountdownFinished, isCountdownNotInitialized, isCountdownRunningOnDefault] = args;
-	if (args.length !== 3) throw new Error(`Expected 3 args, got ${args.length}`);
-	if (args.some((arg) => arg === undefined)) throw new Error(`Arg ${args.indexOf(undefined) + 1} is undefined`);
-
-	let headerText;
-
-	if (isCountdownNotInitialized) headerText = '';
-	else if (isCountdownFinished) headerText = 'COUNTDOWN OVER';
-	else if (!isCountdownNotInitialized) {
-		headerText = isCountdownRunningOnDefault ? "We're launching soon" : 'Time left';
-	}
-
-	return headerText;
-};
-
 export const getMsFromFloatString = (str) => {
 	if (typeof str !== 'string') throw new Error(`Expected string, received ${typeof str}`);
 	if (str.at(-1) === 's') return str.slice(0, -1) * 1000;

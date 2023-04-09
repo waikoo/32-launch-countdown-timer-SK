@@ -1,10 +1,10 @@
 import { get, writable } from 'svelte/store';
 
 export const countdown = writable({
-	seconds: 41,
-	minutes: 55,
-	hours: 23,
-	days: 8
+	seconds: null,
+	minutes: null,
+	hours: null,
+	days: null
 });
 
 export const target = writable({
@@ -20,6 +20,8 @@ export let isCountdownFinished = writable(false);
 
 export let isCountdownRunning = writable(false);
 
-export let isCountdownNotInitialized = writable(true);
+export let isCountdownInitialized = writable(true);
 
-export let isCountdownRunningOnDefault = writable(false);
+export let noDateTime = writable(false);
+
+export let customText = writable('');

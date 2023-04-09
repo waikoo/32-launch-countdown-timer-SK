@@ -1,36 +1,28 @@
 <script>
-	import { onDestroy } from 'svelte';
-	import { showDateInput, isPastDate, isCountdownNotInitialized } from '$lib/stores';
-	import { runCountdown, initStore } from '$utils/countdown/storeActions';
+	import { isPastDate, noDateTime } from '$lib/stores';
+	import { runCountdown, initStores, areInputsValid } from '$utils/countdown/storeActions';
 	import { getMsFromFloatString } from '$utils/countdown/pureHelpers';
 
-	let dateRef, timeRef;
+	let dateRef, timeRef, customTextRef;
 
-	const getScssVar = (variable) => {
-		return getMsFromFloatString(getComputedStyle(document.documentElement).getPropertyValue(variable));
-	};
+	const getScssVar = (variable) => getMsFromFloatString(getComputedStyle(document.documentElement).getPropertyValue(variable));
 
 	const submitHandler = () => {
-		initStore(dateRef.value, timeRef.value);
-		if ($isPastDate) {
-			setTimeout(() => ($isPastDate = false), getScssVar('--animation-duration'));
-		} else {
-			$isCountdownNotInitialized = false;
-			$showDateInput = false;
+		initStores(dateRef.value, timeRef.value, customTextRef.value);
+		if (areInputsValid(getScssVar)) {
 			runCountdown();
 		}
 	};
-
-	onDestroy(() => {});
 </script>
 
 <section class="input-con">
 	<form class="input-wrapper" on:submit={submitHandler}>
 		<label for="date">
-			<span class="future" class:error={$isPastDate}>Choose a future date</span>
+			<span class="future" class:error={$isPastDate || $noDateTime}>Choose a future date</span>
 			<div class="input-button-con">
-				<input type="date" name="date" id="date" bind:this={dateRef} />
-				<input type="time" name="time" id="time" bind:this={timeRef} />
+				<input class:error={$noDateTime} type="date" name="date" id="date" bind:this={dateRef} />
+				<input class:error={$noDateTime} type="time" name="time" id="time" bind:this={timeRef} />
+				<input type="text" name="text" id="text" bind:this={customTextRef} placeholder="Countdown text..." autocomplete="off" spellcheck="false" />
 				<button>Start</button>
 			</div>
 		</label>
@@ -39,7 +31,6 @@
 
 <style lang="scss">
 	.error {
-		color: red;
 		animation: shake-animation $animationDuration ease-in-out;
 	}
 
@@ -79,8 +70,19 @@
 		font-size: 1.5rem;
 	}
 
+	#text::placeholder {
+		color: $ShadowBlue;
+		opacity: 0.5;
+	}
+
 	#date,
 	#time {
+		cursor: pointer;
+	}
+
+	#date,
+	#time,
+	#text {
 		background: $SteelGray;
 		color: $White;
 		font-family: $ff;
@@ -89,7 +91,6 @@
 		padding: 1rem 1.5rem;
 		font-size: 1.2rem;
 		width: 105%;
-		cursor: pointer;
 
 		&::-webkit-calendar-picker-indicator {
 			filter: invert(1);

@@ -1,17 +1,14 @@
 <script>
-	import { isCountdownFinished, isCountdownNotInitialized, isCountdownRunningOnDefault } from '$lib/stores';
-	import { getCountdownHeader } from '$utils/countdown/pureHelpers';
-
-	$: headerText = getCountdownHeader($isCountdownFinished, $isCountdownNotInitialized, $isCountdownRunningOnDefault);
+	import { customText } from '$lib/stores';
 
 	let headerRef;
-	if (headerText === 'Time left') {
+	if ($customText === 'Time left') {
 		headerRef.style.maxWidth = 100;
 	}
 </script>
 
 <div class="title">
-	<h1 bind:this={headerRef} class="item">{headerText}</h1>
+	<h1 bind:this={headerRef} class="item">{$customText}</h1>
 </div>
 
 <style lang="scss">
