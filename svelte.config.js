@@ -1,12 +1,10 @@
 import preprocess from 'svelte-preprocess';
+import adapter from '@sveltejs/adapter-auto';
 
 const config = {
 	kit: {
 		target: '#svelte',
-		adapter: vercel(),
-		paths: {
-			output: 'public'
-		},
+		adapter: adapter(),
 		alias: {
 			$utils: 'src/utils',
 			$lib: 'src/lib'

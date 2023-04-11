@@ -9,6 +9,7 @@
   },
   "devDependencies": {
     "@sveltejs/adapter-auto": "^2.0.0",
+    "@sveltejs/adapter-vercel": "^2.4.1",
     "@sveltejs/kit": "^1.5.0",
     "js-confetti": "^0.11.0",
     "sass": "^1.53.0",
