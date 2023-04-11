@@ -4,6 +4,11 @@
 	import { showDateInput, isCountdownInitialized } from '$lib/stores';
 	import Header from '../components/Header.svelte';
 	import Socials from '../components/Socials.svelte';
+	import { onMount } from 'svelte';
+
+	onMount(() => {
+		$showDateInput = true;
+	});
 </script>
 
 <section class="page">
@@ -22,11 +27,16 @@
 </section>
 
 <style lang="scss">
+	.page {
+		min-width: 100%;
+	}
+
 	.countdown-comp {
 		display: grid;
 		justify-items: center;
 		grid-template-rows: 1.8fr 2fr 0.7fr;
 		min-height: 100vh;
+		min-width: 100%;
 		background-color: $Charade;
 		position: relative;
 		overflow-x: hidden;
@@ -36,7 +46,23 @@
 		z-index: 10;
 		position: absolute;
 		bottom: 0;
-		right: -8rem;
+		min-height: 240px;
+		left: -60rem;
+	}
+
+	@media (min-width: 700px) {
+		.bg-hills {
+			width: 100vw;
+			min-height: 160px;
+			height: auto;
+			left: 0;
+		}
+	}
+
+	@media (min-width: 1000px) {
+		.bg-hills {
+			min-height: 0;
+		}
 	}
 
 	.countdown-comp::before {

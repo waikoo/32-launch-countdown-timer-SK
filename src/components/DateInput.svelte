@@ -2,22 +2,22 @@
 	import { isPastDate, noDateTime, countdown, showDateInput, isCountdownInitialized } from '$lib/stores';
 	import { runCountdown, initStores, areInputsValid, testCountdownOverIn } from '$utils/countdown/storeActions';
 	import { getMsFromFloatString } from '$utils/countdown/pureHelpers';
+	import { fade } from 'svelte/transition';
+	import { onMount } from 'svelte';
 
 	let dateRef, timeRef, customTextRef;
 
 	const getScssVar = (variable) => getMsFromFloatString(getComputedStyle(document.documentElement).getPropertyValue(variable));
 
 	const submitHandler = () => {
-		// initStores(dateRef.value, timeRef.value, customTextRef.value);
-		// if (areInputsValid(getScssVar)) {
-		// 	runCountdown();
-		// }
-
-		testCountdownOverIn(1);
+		initStores(dateRef.value, timeRef.value, customTextRef.value);
+		if (areInputsValid(getScssVar)) {
+			runCountdown();
+		}
 	};
 </script>
 
-<section class="input-con">
+<section in:fade class="input-con">
 	<form class="input-wrapper" on:submit={submitHandler}>
 		<label for="date">
 			<span class="future" class:error={$isPastDate || $noDateTime}>Choose a future date</span>
@@ -33,18 +33,18 @@
 
 <style lang="scss">
 	.error {
-		animation: shake-animation $animationDuration ease-in-out;
+		animation: shake-it $animationDuration ease-in-out;
 	}
 
 	.input-con {
 		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
 		z-index: 12;
 		display: grid;
 		place-items: center;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: 100%;
 	}
 
 	.input-wrapper {
@@ -57,11 +57,11 @@
 	.input-button-con {
 		display: flex;
 		gap: 2rem;
+		flex-direction: column;
 	}
-	@media (max-width: 600px) {
-		.input-button-con {
-			flex-direction: column;
-		}
+
+	.future {
+		text-align: center;
 	}
 
 	label {
@@ -117,6 +117,8 @@
 		font-size: 1.2rem;
 		display: block;
 		border: 2px solid $Martinique;
+		transition: border-color 0.2s ease-in-out, color 0.2s ease-in-out;
+
 		&:hover {
 			cursor: pointer;
 			color: $BrinkPink;
@@ -124,7 +126,7 @@
 		}
 	}
 
-	@keyframes shake-animation {
+	@keyframes shake-it {
 		0% {
 			transform: scale(1);
 		}

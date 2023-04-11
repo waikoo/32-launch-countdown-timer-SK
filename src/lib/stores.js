@@ -12,7 +12,7 @@ export const target = writable({
 	time: null
 });
 
-export let showDateInput = writable(true);
+export let showDateInput = writable(false);
 
 export let isPastDate = writable(false);
 

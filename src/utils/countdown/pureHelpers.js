@@ -105,7 +105,7 @@ export const getMsFromFloatString = (str) => {
 	else throw new Error('Does not end on "s"');
 };
 
-const getCount = (num) => {
+export const getCount = (num) => {
 	if (typeof num === 'number') {
 		const str = num.toString();
 		return str.length < 2 ? str.padStart(2, '0') : str;
@@ -116,5 +116,43 @@ const getCount = (num) => {
 
 export const getPropOf = (countdownStore) => {
 	const { seconds, minutes, hours, days } = countdownStore;
-	return [getCount(seconds), getCount(minutes), getCount(hours), getCount(days)];
+	return {
+		days: getCount(days),
+		hours: getCount(hours),
+		minutes: getCount(minutes),
+		seconds: getCount(seconds)
+	};
+};
+
+const getResetValue = (i, day) => {
+	let num;
+
+	switch (i) {
+		case 0:
+			num = '00';
+			break;
+
+		case 1:
+			num = day === 0 ? '00' : '23';
+			break;
+
+		case 2:
+			num = day === 0 ? '00' : '59';
+			break;
+
+		case 3:
+			num = day === 0 ? '00' : '59';
+			break;
+
+		default:
+			break;
+	}
+	return num;
+};
+
+export const getDecremented = (value, i, days) => {
+	const newNum = parseInt(value - 1)
+		.toString()
+		.padStart(2, '0');
+	return newNum < 1 ? getResetValue(i, days) : newNum;
 };

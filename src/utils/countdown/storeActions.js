@@ -47,65 +47,42 @@ export const runCountdown = () => {
 };
 
 const runConfetti = () => {
-	const jsConfettiEmojis = {
-		confettiRadius: 7,
-		confettiNumber: 100,
-		confettiColors: ['#ff0a54', '#ff477e', '#ff7096', '#ff85a1', '#fbb1bd', '#f9bec7'],
-		emojis: ['⏲️', '⌛', '⏰', '⏱️', '📅', '⌚']
-	};
-
-	const jsConfettiEmojis2 = {
-		confettiRadius: 18,
-		confettiNumber: 80,
-		confettiColors: ['#ff0a54', '#ff477e', '#ff7096', '#ff85a1', '#fbb1bd', '#f9bec7'],
-		emojis: ['⏲️', '⌛', '⏰', '⏱️', '📅', '⌚']
-	};
-
 	const jsConfetti = new JSConfetti();
-	jsConfetti.addConfetti(jsConfettiEmojis);
+	const redConfetti = ['#ff0a54', '#ff477e', '#ff7096', '#ff85a1', '#fbb1bd', '#f9bec7'];
+
+	jsConfetti.addConfetti({
+		confettiRadius: 13,
+		confettiNumber: 250,
+		confettiColors: redConfetti
+	});
 
 	const jsConfetti2 = new JSConfetti();
 	setTimeout(
 		() =>
 			jsConfetti2.addConfetti({
-				confettiRadius: 13,
-				confettiNumber: 250,
-				confettiColors: ['#ff0a54', '#ff477e', '#ff7096', '#ff85a1', '#fbb1bd', '#f9bec7']
-			}),
-		500
-	);
-
-	const jsConfetti3 = new JSConfetti();
-	setTimeout(() => jsConfetti3.addConfetti(jsConfettiEmojis2), 2000);
-
-	const jsConfetti4 = new JSConfetti();
-	setTimeout(
-		() =>
-			jsConfetti4.addConfetti({
 				confettiRadius: 20,
 				confettiNumber: 450,
-				confettiColors: ['#f9154f', '#fa2e61', '#fa4774', '#fc799a', '#fc92ad', '#fff']
+				confettiColors: redConfetti
 			}),
-		1200
+		400
 	);
 
 	setTimeout(() => jsConfetti.clearCanvas(), 5000);
-	setTimeout(() => jsConfetti2.clearCanvas(), 7000);
-	setTimeout(() => jsConfetti4.clearCanvas(), 7500);
-	setTimeout(() => jsConfetti3.clearCanvas(), 8000);
+	setTimeout(() => jsConfetti2.clearCanvas(), 5500);
 };
 
 export const stopCountdown = (intervalId) => {
-	isCountdownInitialized.set(false);
+	setTimeout(() => isCountdownInitialized.set(false), 500);
 	runConfetti();
 	resetStoreValues();
+
 	clearInterval(intervalId);
 };
 
 const resetStoreValues = () => {
 	isCountdownFinished.set(true);
 	isCountdownRunning.set(false);
-	setTimeout(() => showDateInput.set(true), 3000);
+	setTimeout(() => showDateInput.set(true), 1500);
 };
 
 export const initStores = (dateValue, timeValue, customTextValue) => {
