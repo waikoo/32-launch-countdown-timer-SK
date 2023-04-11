@@ -2,6 +2,11 @@ import preprocess from 'svelte-preprocess';
 
 const config = {
 	kit: {
+		target: '#svelte',
+		adapter: vercel(),
+		paths: {
+			output: 'public'
+		},
 		alias: {
 			$utils: 'src/utils',
 			$lib: 'src/lib'
