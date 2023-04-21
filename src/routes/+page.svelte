@@ -16,7 +16,7 @@
 		<DateInput />
 	{/if}
 	<section class="countdown-comp">
-		<img class="bg-hills" src="src/assets/img/pattern-hills.svg" alt="" />
+		<img class="bg-hills" src="/src/lib/pattern-hills.svg" alt="" />
 		<Header />
 
 		{#if $isCountdownInitialized}
@@ -66,7 +66,7 @@
 	}
 
 	.countdown-comp::before {
-		background-image: url('src/assets/img/bg-stars.svg');
+		background-image: url('/src/lib/bg-stars.svg');
 		content: '';
 		position: absolute;
 		display: block;
